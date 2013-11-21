@@ -12,6 +12,6 @@
  *= require_tree .
  */
  
-body { 
+.body { 
  padding-bottom: 70px; 
  }
