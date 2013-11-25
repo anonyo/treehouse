@@ -1,5 +1,9 @@
 Treebook::Application.routes.draw do
   devise_for :users
+  
+  devise_scope :user do
+  get "register", :to => "to: devise/registration#new"
+end
 
   resources :statuses
   root :to => "statuses#index"
