@@ -2,7 +2,7 @@ Treebook::Application.routes.draw do
   devise_for :users
   
   devise_scope :user do
-  get "register", :to => "to: devise/registration#new" as: :register
+  get "register", to: "devise/registration#new" as: :register
 end
 
   resources :statuses
