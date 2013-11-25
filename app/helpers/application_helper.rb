@@ -2,9 +2,9 @@ module ApplicationHelper
 def flash_class(type)
   case type
   when :alert
-  "alert-success"
+  "alert-info"
   when :notice
-  "alert-sucess"
+  "alert-danger"
   else
   ""
   end
