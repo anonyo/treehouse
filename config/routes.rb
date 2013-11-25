@@ -3,6 +3,7 @@ Treebook::Application.routes.draw do
   
   devise_scope :user do
   get "register", to: "devise/registrations#new", as: :register
+  get "login", to: "devise/sessions#new", as: :login
 end
 
   resources :statuses
