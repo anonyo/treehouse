@@ -9,3 +9,4 @@ def flash_class(type)
   ""
   end
 end
+end
