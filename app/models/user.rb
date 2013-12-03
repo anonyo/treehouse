@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   			presence: true, 
   			uniqueness: true, 
   			format: { with: /\A[a-zA-Z0-9]+\z/,
-    message: 'Must be formatted correctly.' } 
+        message: 'Must be formatted correctly.' } 
             
   def full_name
     first_name + " " + last_name

@@ -80,7 +80,7 @@ class StatusesController < ApplicationController
     @status.destroy
 
     respond_to do |format|
-      format.html { redirect_to statuses_url }
+      format.html { redirect_to statuses_url, notice: 'Status was successfully deleted.'  }
       format.json { head :no_content }
     end
   end
