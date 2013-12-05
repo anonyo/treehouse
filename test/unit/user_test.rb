@@ -43,10 +43,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "a user should have a profile name" do
-    user = User.new(first_name: 'Jason', last_name: 'Seifer', email: 'jason2@teamtreehouse.com')
+    user = User.new(first_name: 'Jason', last_name: 'Seifer', email: 'jason2@teamtreehouse.com', profile_name: "jasonseifer2")
     user.password = user.password_confirmation = 'asdfasdf'
-
-    user.profile_name = 'jasonseifer_1'
     assert user.valid?
   end
   
@@ -63,5 +61,8 @@ class UserTest < ActiveSupport::TestCase
     
    end
   
+  test "that calling to_param on a user returns the profile_name" do
+    assert_equal "jasonseifer", users(:jason).to_param
+  end
 
 end

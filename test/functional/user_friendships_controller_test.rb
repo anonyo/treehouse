@@ -1,52 +1,113 @@
 require 'test_helper'
 
 class UserFriendshipsControllerTest < ActionController::TestCase
-    context "#new" do
-      context "when not logged in" do
-        should "redirect to the login page" do
-          get :new 
-          assert_response :redirect
-        end  
+  context "#new" do
+    context "when not logged in" do
+      should "redirect to the login page" do
+        get :new
+        assert_response :redirect
+        assert_redirected_to login_path
+      end
     end
-      context "when logged in" do
+
+    context "when logged in" do
+      setup do
+        sign_in users(:jason)
+      end
+
+      should "get new without error" do
+        get :new
+        assert_response :success
+      end
+
+      should "should set a flash error if the friend_id param is missing" do
+        get :new, {}
+        assert_equal "Friend required", flash[:error]
+      end
+
+      should "display a 404 page if no friend is found" do
+        get :new, friend_id: 'invalid'
+        assert_response :not_found
+      end
+
+      should "display the friend's name" do
+        get :new, friend_id: users(:jim).id
+        assert_match /#{users(:jim).full_name}/, response.body
+      end
+
+      should "assign a user friendship" do
+        get :new, friend_id: users(:jim).id
+        assert assigns(:user_friendship)
+      end
+
+      should "assign a user friendship with the user as current user" do
+        get :new, friend_id: users(:jim).id
+        assert_equal assigns(:user_friendship).user, users(:jason)
+      end
+
+      should "assign a user friendship with the correct friend" do
+        get :new, friend_id: users(:jim).id
+        assert_equal assigns(:user_friendship).friend, users(:jim)
+      end
+    end
+  end
+  
+  context "#create" do
+    context "when not logged in" do
+      should "redirect to the login page" do
+        get :new
+        assert_response :redirect
+        assert_redirected_to login_path
+      end
+    end
+
+    context "when logged in" do
+      setup do
+        sign_in users(:jason)
+      end
+
+      context "with no friend_id" do
         setup do
-          sign_in users(:jason)
+          post :create
         end
-        should "get new and return success" do
-          get :new
-          assert_response :success
+
+        should "set the flash error message" do
+          assert !flash[:error].empty?
         end
-        
-        should "should set a flash error if the friend_id params is missing" do
-          get :new, {}
-          assert_equal "Friend required", flash[:error]
-        end 
-        
-        should "display the friend's name" do
-          get :new, friend_id: users(:jim).id
-          assert_match /#{users(:jim).full_name}/, response.body 
+
+        should "set redirect to root" do
+          assert_redirected_to root_path
         end
-        
-        should "asign a new user friendship" do
-          get :new, friend_id: users(:jim).id
+      end
+
+      context "with a valid friend_id" do
+        setup do
+          post :create, friend_id: users(:mike).id
+        end
+
+        should "assign a friend object" do
+          assert_equal users(:mike), assigns(:friend)
+        end
+
+        should "assign a user_friendship object" do
           assert assigns(:user_friendship)
-        end
-        
-        should "assign a new user friendship to the correct friend" do
-          get :new, friend_id: users(:jim)
-          assert_equal users(:jim), assigns(:user_friendship).friend
-        end
-        
-        should "assign a new user friendship to the currently logged in user" do
-          get :new, friend_id: users(:jim)
           assert_equal users(:jason), assigns(:user_friendship).user
+          assert_equal users(:mike), assigns(:user_friendship).friend
+        end
+
+        should "create a user friendship" do
+          assert users(:jason).friends.include?(users(:mike))
         end
         
-        should "returns a 404 status if no friend is found" do
-          get :new, friend_id: 'invalid'
-          assert_response :not_found
-        end        
-        
-      end        
+        should "redirect to the profile page of the friend" do
+          assert_response :redirect
+          assert_redirected_to_profile_path(users(:mike))
+         end
+          
+          should "set the flash success message" do
+            assert flash[:success]
+            assert_equal "You are now friends with #{users(:mike).profile_name}", flash[:success]
+        end
+      end       
   end
 end
