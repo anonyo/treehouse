@@ -17,7 +17,13 @@ end
     delete "/login" => 'devise/sessions#destroy', as: :destroy_user_session
   end
     
-  resources :user_friendships
+  resources :user_friendships do 
+    member do
+      put :accept
+      get "user_friendships/profile_name/accept"
+      end
+    end
+
 
   resources :statuses
   get "feed", to: "statuses#index", as: :feed

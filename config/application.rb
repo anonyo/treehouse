@@ -60,6 +60,6 @@ module Treebook
     config.assets.version = '1.0'
     
     # Required for gem devise
-    config.assets.initialize_on_precompile = false
+    config.assets.initialize_on_precompile = true
   end
 end

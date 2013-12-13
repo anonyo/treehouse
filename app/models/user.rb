@@ -6,17 +6,36 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :profile_name
-  # attr_accessible :title, :body
+                  :first_name, :last_name, :profile_name  
+  
+  # has many associations
   has_many :statuses
   has_many :user_friendships
   has_many :friends, through: :user_friendships,
-  conditions: { user_friendships: { state: 'accepted' }}
-  
+                     conditions: { user_friendships: { state: 'accepted' } }
+
   has_many :pending_user_friendships, class_name: 'UserFriendship',
                                       foreign_key: :user_id,
                                       conditions: { state: 'pending' }
   has_many :pending_friends, through: :pending_user_friendships, source: :friend
+  
+  has_many :requested_user_friendships, class_name: 'UserFriendship',
+                                      foreign_key: :user_id,
+                                      conditions: { state: 'requested' }
+  has_many :requested_friends, through: :requested_user_friendships, source: :friend
+  
+  has_many :blocked_user_friendships, class_name: 'UserFriendship',
+                                      foreign_key: :user_id,
+                                      conditions: { state: 'blocked' }
+  has_many :blocked_friends, through: :blocked_user_friendships, source: :friend
+  
+  has_many :accepted_user_friendships, class_name: 'UserFriendship',
+                                      foreign_key: :user_id,
+                                      conditions: { state: 'accepted' }
+  has_many :accepted_friends, through: :accepted_user_friendships, source: :friend
+  
+  
+  #validations   
   
   validates :first_name, presence: true
   

@@ -67,6 +67,7 @@ class UserFriendshipTest < ActiveSupport::TestCase
         end  
       end
     end  
+
   
   
 end
