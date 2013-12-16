@@ -167,7 +167,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   database_cleaner
   devise
-  draper
+  draper (~> 1.3.0)
   factory_girl_rails
   jquery-rails
   js-routes

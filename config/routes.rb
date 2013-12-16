@@ -1,7 +1,5 @@
 Treebook::Application.routes.draw do
   get "profiles/show"
-
-
   
   as :user do
   get "/register", to: "devise/registrations#new", as: :register
@@ -20,6 +18,7 @@ end
   resources :user_friendships do 
     member do
       put :accept
+      put :block
       get "user_friendships/profile_name/accept"
       end
     end
