@@ -10,7 +10,8 @@ gem 'devise'
 gem 'simple_form'
 gem 'state_machine'
 gem 'draper', '~> 1.3.0'
-gem "js-routes"
+gem 'js-routes'
+gem 'rails_12factor'
 
 group :development, :test do
   gem 'sqlite3'
